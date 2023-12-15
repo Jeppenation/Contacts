@@ -39,12 +39,40 @@ namespace Contacts.Shared.Services
 
         public IContact GetContact(string email)
         {
-            throw new NotImplementedException();
+            try 
+            {
+                GetContacts();
+                var contact = _contacts.FirstOrDefault(_contacts => _contacts.Email == email);
+                return contact ??= null!;
+            }
+            
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            return null!;
         }
 
         public IEnumerable<IContact> GetContacts()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var json = _fileService.GetContent(_filePath);
+                if (json != null)
+                {
+                    _contacts = JsonConvert.DeserializeObject<List<IContact>>(json, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All,
+                        Formatting = Formatting.Indented
+                    })!;
+                }
+                return _contacts;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            return null!;
         }
 
         public bool RemoveContact(string email)
