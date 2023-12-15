@@ -24,7 +24,7 @@ namespace Contacts.Shared.Services
         {
             try
             {
-                if (! _contacts.Any(_contacts => _contacts.Email == contact.Email))
+                if (! _contacts.Any(_contacts => _contacts.EmailAddress == contact.EmailAddress))
                 {
                     _contacts.Add(contact);
                     string json = JsonConvert.SerializeObject(_contacts, new JsonSerializerSettings
@@ -49,7 +49,7 @@ namespace Contacts.Shared.Services
             try 
             {
                 GetContacts();
-                var contact = _contacts.FirstOrDefault(_contacts => _contacts.Email == email);
+                var contact = _contacts.FirstOrDefault(_contacts => _contacts.EmailAddress == email);
                 return contact ??= null!;
             }
             
@@ -93,7 +93,7 @@ namespace Contacts.Shared.Services
                 GetContacts();
 
                 //Hitta kontakten med email
-                var contact = _contacts.FirstOrDefault(_contacts => _contacts.Email == email);
+                var contact = _contacts.FirstOrDefault(_contacts => _contacts.EmailAddress == email);
 
                 //om kontakten finns, ta bort den
                 if (contact != null)
