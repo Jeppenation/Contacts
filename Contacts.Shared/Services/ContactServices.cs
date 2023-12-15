@@ -82,9 +82,43 @@ namespace Contacts.Shared.Services
             return null!;
         }
 
+
+        //Expremintellt här nedan: 
         public bool RemoveContact(string email)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+                //Hämta alla kontakter
+                GetContacts();
+
+                //Hitta kontakten med email
+                var contact = _contacts.FirstOrDefault(_contacts => _contacts.Email == email);
+
+                //om kontakten finns, ta bort den
+                if (contact != null)
+                {
+
+                    //Ta bort kontakten
+                    _contacts.Remove(contact);
+
+                    //Serialisera om listan
+                    string json = JsonConvert.SerializeObject(_contacts, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All,
+                        Formatting = Formatting.Indented
+                    }) ;
+
+                    //Spara uppdaterade listan
+                    var result = _fileService.SaveContact(_filePath, json);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            return false;
         }
     }
 }
