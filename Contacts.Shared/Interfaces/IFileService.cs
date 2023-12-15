@@ -2,7 +2,7 @@
 
 namespace Contacts.Shared.Interfaces
 {
-    internal interface IFileService
+    public interface IFileService
     {
         /// <summary>
         /// Save a contact to a file

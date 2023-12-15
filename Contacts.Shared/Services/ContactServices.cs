@@ -9,9 +9,16 @@ namespace Contacts.Shared.Services
     {
         private readonly IFileService _fileService;
 
+  
+
         private readonly string _filePath = @"C:\Users\Hwila\source\repos\Contacts";
 
         private List<IContact> _contacts = [];
+
+        public ContactServices(IFileService fileService)
+        {
+            _fileService = fileService;
+        }
 
         public bool AddContact(IContact contact)
         {

@@ -25,7 +25,17 @@ namespace Contacts.Shared.Services
 
         public bool SaveContact(string filepath, string contact)
         {
-            throw new NotImplementedException();
+           try
+            {
+                using var writer = new StreamWriter(filepath);
+                writer.WriteLine(contact);
+                return true;
+           }
+           catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+           }
+            return false;
         }
     }
 }
