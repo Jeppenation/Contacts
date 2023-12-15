@@ -2,7 +2,7 @@
 
 namespace Contacts.Shared.Interfaces
 {
-    internal interface IContactService
+    public interface IContactService
     {
 
         /// <summary>

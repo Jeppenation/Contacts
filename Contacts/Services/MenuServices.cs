@@ -7,6 +7,13 @@ namespace Contacts.Services
 {
     public class MenuServices : IMenuService
     {
+        private readonly IContactService _contactService;
+
+        public MenuServices(IContactService contactService)
+        {
+            _contactService = contactService;
+        }
+
         public int GetMenuChoice()
         {
             Console.Write("\nPlease enter your choice: ");
@@ -53,9 +60,35 @@ namespace Contacts.Services
             }
         }
 
-        private void AddContactMenu()
+        public void AddContactMenu()
         {
-            throw new NotImplementedException();
+            IContact contact = new Contact();
+            
+            Console.Clear();
+            Console.WriteLine("***Add Contact Menu ***\n");
+
+            Console.Write("Enter First Name: ");
+            contact.FirstName = Console.ReadLine()!;
+
+            Console.Write("Enter Last Name: ");
+            contact.LastName = Console.ReadLine()!;
+
+            Console.Write("Enter Phone Number: ");
+            contact.PhoneNumber = Console.ReadLine()!;
+
+            Console.Write("Enter Email Address: ");
+            contact.EmailAddress = Console.ReadLine()!;
+
+            Console.Write("Enter Address: ");
+            contact.Address = Console.ReadLine()!;
+
+            Console.Write("Enter City: ");
+            contact.City = Console.ReadLine()!;
+
+            _
+
+            
+            
         }
     }
 }
