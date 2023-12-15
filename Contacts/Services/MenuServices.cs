@@ -74,7 +74,7 @@ namespace Contacts.Services
                             Console.WriteLine("Remove Contact");
                             break;
                         case 55:
-                            Console.WriteLine("Exit");
+                            Exit();
                             break;
                         default:
                             Console.WriteLine("Invalid Choice");
@@ -87,6 +87,30 @@ namespace Contacts.Services
             {
                 Debug.WriteLine(ex.Message);
             }
+        }
+
+        private  void Exit()
+        {
+            Console.Clear();
+            Console.WriteLine("Are you sure you want to exit? (y/n)");
+            var message = Console.ReadLine()!;
+            message = message.ToUpper();
+            if (message == "Y")
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\nThank you for using the app!\n\n");
+                Console.ResetColor();
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
+                Environment.Exit(0);
+            }
+            else
+            {
+                DisplayMenu();
+            }
+            
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
         }
 
         public void ShowContactsMenu()
@@ -144,8 +168,24 @@ namespace Contacts.Services
             //Add the contact to the list
             _contactService.AddContact(contact);
 
-            Console.ReadKey();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("--- Contact Added Successfully ---\n\n");
+            Console.ResetColor();
 
+            Console.WriteLine("Would you like to add another contact? (y/n)");
+            var message = Console.ReadLine()!;
+
+            message = message.ToUpper();
+            if (message == "Y")
+            {
+                AddContactMenu();
+            }
+            else
+            {
+                DisplayMenu();
+            }
+            Console.ReadKey();
+            DisplayMenu();
             
             
         }
