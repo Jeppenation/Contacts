@@ -11,7 +11,7 @@ namespace Contacts.Shared.Services
 
   
 
-        private readonly string _filePath = @"C:\Users\Hwila\source\repos\Contacts";
+        private readonly string _filePath = @"C:\Users\Hwila\source\repos\contacts.json";
 
         private List<IContact> _contacts = [];
 
@@ -26,6 +26,7 @@ namespace Contacts.Shared.Services
             {
                 if (! _contacts.Any(_contacts => _contacts.EmailAddress == contact.EmailAddress))
                 {
+                    Debug.WriteLine(_filePath);
                     _contacts.Add(contact);
                     var json = JsonConvert.SerializeObject(_contacts, new JsonSerializerSettings
                     {

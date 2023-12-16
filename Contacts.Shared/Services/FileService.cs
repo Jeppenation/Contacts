@@ -27,6 +27,7 @@ namespace Contacts.Shared.Services
         {
            try
             {
+                Debug.WriteLine(filepath);
                 using var writer = new StreamWriter(filepath);
                 writer.WriteLine(contact);
                 return true;
