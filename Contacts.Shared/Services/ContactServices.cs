@@ -27,7 +27,7 @@ namespace Contacts.Shared.Services
                 if (! _contacts.Any(_contacts => _contacts.EmailAddress == contact.EmailAddress))
                 {
                     _contacts.Add(contact);
-                    string json = JsonConvert.SerializeObject(_contacts, new JsonSerializerSettings
+                    var json = JsonConvert.SerializeObject(_contacts, new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.All,
                         Formatting = Formatting.Indented
