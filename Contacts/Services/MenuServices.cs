@@ -103,7 +103,7 @@ namespace Contacts.Services
 
                 //Get the contact to delete
                 Console.Write("Enter the name of the contact you want to delete: ");
-                var email = Console.ReadLine()!;
+                var email = Console.ReadLine()!.ToLower();
                 
                 //Find the contact
                 var contact = _contactService.GetContacts().FirstOrDefault(c => c.EmailAddress.Equals(email, StringComparison.OrdinalIgnoreCase));
@@ -271,6 +271,7 @@ namespace Contacts.Services
 
             Console.Write("Enter Email Address: ");
             contact.EmailAddress = Console.ReadLine()!;
+            contact.EmailAddress = contact.EmailAddress.ToLower();
 
             Console.Write("Enter Address: ");
             contact.Address = Console.ReadLine()!;
