@@ -68,7 +68,7 @@ namespace Contacts.Services
                             ShowContactsMenu();
                             break;
                         case 3:
-                            Console.WriteLine("Show Specific Contact");
+                            ShowContactMenu();
                             break;
                         case 4:
                             Console.WriteLine("Remove Contact");
@@ -81,6 +81,45 @@ namespace Contacts.Services
                             break;
                     }
 
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+
+        private void ShowContactMenu()
+        {
+            try
+            {
+                Console.Clear();
+                Console.WriteLine($"*** {GetMenuTitle("3")} ***\n");
+                Console.Write("Enter the name of the contact you want to find: ");
+                var email = Console.ReadLine()!;
+
+                //var contact = _contactService.GetContact(email);
+                var contact = _contactService.GetContacts().FirstOrDefault(c => c.EmailAddress.Equals(email, StringComparison.OrdinalIgnoreCase));
+
+                if (contact != null)
+                {
+                    Console.WriteLine($"\nName: {contact.FirstName} {contact.LastName}");
+                    Console.WriteLine($"Phone: {contact.PhoneNumber}");
+                    Console.WriteLine($"Email: {contact.EmailAddress}");
+                    Console.WriteLine($"Address: {contact.Address}");
+                    Console.WriteLine($"City: {contact.City}");
+                    Console.WriteLine("***********************************");
+
+                    Console.WriteLine("\nPress any key to continue...");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Contact not found!");
+                    Console.ResetColor();
+                    Console.WriteLine("\nPress any key to continue...");
+                    Console.ReadKey();
                 }
             }
             catch (Exception ex)
