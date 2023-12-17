@@ -2,6 +2,7 @@
 using Contacts.Shared.Interfaces;
 using Contacts.Shared.Models;  
 using Contacts.Shared.Services;
+using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
 namespace Contacts.Services
@@ -17,6 +18,7 @@ namespace Contacts.Services
 
         public int GetMenuChoice()
         {
+            //Get the user input
             Console.Write("\nPlease enter your choice: ");
             var choice = Console.ReadLine();
             return Convert.ToInt32(choice);
@@ -24,7 +26,7 @@ namespace Contacts.Services
 
         public string GetMenuTitle(string choice)
         {
-
+            //Return the menu title based on the choice
             switch (choice)
             {
                 case "1":
@@ -49,8 +51,9 @@ namespace Contacts.Services
             {
                 while (true)
                 {
+                    //Display the menu
                     Console.Clear();
-                    Console.WriteLine("*** Welcome to the Contact App ***"); //<- - This is the menu
+                    Console.WriteLine("*** Welcome to the Contact App ***"); 
                     Console.WriteLine("1. Add Contact");
                     Console.WriteLine("2. Show All Contacts");
                     Console.WriteLine("3: Show Specific Contact");
@@ -77,7 +80,11 @@ namespace Contacts.Services
                             Exit();
                             break;
                         default:
+                            Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("Invalid Choice");
+                            Console.ResetColor();
+                            ConfirmContinue();
                             break;
                     }
 
@@ -94,40 +101,47 @@ namespace Contacts.Services
             try
             {
                 Console.Clear();
-                Console.WriteLine($"*** {GetMenuTitle("3")} ***\n");
+                Console.WriteLine($"*** {GetMenuTitle("4")} ***\n");
+
+                //Get the contact to delete
                 Console.Write("Enter the name of the contact you want to delete: ");
                 var email = Console.ReadLine()!;
-
+                
+                //Find the contact
                 var contact = _contactService.GetContacts().FirstOrDefault(c => c.EmailAddress.Equals(email, StringComparison.OrdinalIgnoreCase));
 
+                
+                //If the contact is found, remove it
                 if (contact != null)
                 {
+                    //Attempt to remove the contact, and check the result
                     bool isRemoved = _contactService.RemoveContact(email);
 
+                    //If the contact was removed, show a success message
                     if (isRemoved)
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("--- Contact Removed Successfully ---\n\n");
                         Console.ResetColor();
-                        Console.WriteLine("\nPress any key to continue...");
-                        Console.ReadKey();
+                        ConfirmContinue();
                     }
+
+                    //If the contact was not removed, show an error message
                     else
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("--- Contact Not Removed ---\n\n");
                         Console.ResetColor();
-                        Console.WriteLine("\nPress any key to continue...");
-                        Console.ReadKey();
+                        ConfirmContinue();
                     }
                 }
+                //If the contact was not found, show an error message
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Contact not found!");
                     Console.ResetColor();
-                    Console.WriteLine("\nPress any key to continue...");
-                    Console.ReadKey();
+                    ConfirmContinue();
                 }
             }
             catch (Exception ex)
@@ -156,16 +170,14 @@ namespace Contacts.Services
                     Console.WriteLine($"City: {contact.City}");
                     Console.WriteLine("***********************************");
 
-                    Console.WriteLine("\nPress any key to continue...");
-                    Console.ReadKey();
+                    ConfirmContinue();
                 }
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Contact not found!");
                     Console.ResetColor();
-                    Console.WriteLine("\nPress any key to continue...");
-                    Console.ReadKey();
+                    ConfirmContinue();
                 }
             }
             catch (Exception ex)
@@ -174,10 +186,16 @@ namespace Contacts.Services
             }
         }
 
+        private  void ConfirmContinue()
+        {
+            Console.WriteLine("\nPress any key to continue...");
+            Console.ReadKey();
+        }
+
         private  void Exit()
         {
             Console.Clear();
-            Console.WriteLine("Are you sure you want to exit? (y/n)");
+            Console.Write("Are you sure you want to exit? (y/n): ");
             var message = Console.ReadLine()!;
             message = message.ToUpper();
             if (message == "Y")
@@ -185,8 +203,7 @@ namespace Contacts.Services
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("\nThank you for using the app!\n\n");
                 Console.ResetColor();
-                Console.WriteLine("Press any key to continue...");
-                Console.ReadKey();
+                ConfirmContinue();
                 Environment.Exit(0);
             }
             else
@@ -205,16 +222,29 @@ namespace Contacts.Services
                 Console.Clear();
                 Console.WriteLine($"*** {GetMenuTitle("2")} ***\n");
                 var contacts = _contactService.GetContacts();
-                foreach (var contact in contacts)
+
+                if (contacts.Count() == 0)
                 {
-                    Console.WriteLine($"Name: {contact.FirstName} {contact.LastName}");
-                    Console.WriteLine($"Phone: {contact.PhoneNumber}");
-                    Console.WriteLine($"Email: {contact.EmailAddress}");
-                    Console.WriteLine($"Address: {contact.Address}");
-                    Console.WriteLine($"City: {contact.City}");
-                    Console.WriteLine("***********************************");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("No contacts found!");
+                    Console.ResetColor();
+                    ConfirmContinue();
+                    return;
                 }
-                Console.ReadKey();
+                else
+                {
+                    foreach (var contact in contacts)
+                    {
+                        Console.WriteLine($"Name: {contact.FirstName} {contact.LastName}");
+                        Console.WriteLine($"Phone: {contact.PhoneNumber}");
+                        Console.WriteLine($"Email: {contact.EmailAddress}");
+                        Console.WriteLine($"Address: {contact.Address}");
+                        Console.WriteLine($"City: {contact.City}");
+                        Console.WriteLine("***********************************");
+                    }
+                }
+               
+                ConfirmContinue();
             }
             catch (Exception ex)
             {
