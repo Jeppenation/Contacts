@@ -71,7 +71,7 @@ namespace Contacts.Services
                             ShowContactMenu();
                             break;
                         case 4:
-                            Console.WriteLine("Remove Contact");
+                            DeleteContact();
                             break;
                         case 55:
                             Exit();
@@ -89,16 +89,62 @@ namespace Contacts.Services
             }
         }
 
+        private void DeleteContact()
+        {
+            try
+            {
+                Console.Clear();
+                Console.WriteLine($"*** {GetMenuTitle("3")} ***\n");
+                Console.Write("Enter the name of the contact you want to delete: ");
+                var email = Console.ReadLine()!;
+
+                var contact = _contactService.GetContacts().FirstOrDefault(c => c.EmailAddress.Equals(email, StringComparison.OrdinalIgnoreCase));
+
+                if (contact != null)
+                {
+                    bool isRemoved = _contactService.RemoveContact(email);
+
+                    if (isRemoved)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("--- Contact Removed Successfully ---\n\n");
+                        Console.ResetColor();
+                        Console.WriteLine("\nPress any key to continue...");
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("--- Contact Not Removed ---\n\n");
+                        Console.ResetColor();
+                        Console.WriteLine("\nPress any key to continue...");
+                        Console.ReadKey();
+                    }
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Contact not found!");
+                    Console.ResetColor();
+                    Console.WriteLine("\nPress any key to continue...");
+                    Console.ReadKey();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+
         private void ShowContactMenu()
         {
             try
             {
                 Console.Clear();
                 Console.WriteLine($"*** {GetMenuTitle("3")} ***\n");
-                Console.Write("Enter the name of the contact you want to find: ");
+                Console.Write("Enter the name of the contact you want to delete: ");
                 var email = Console.ReadLine()!;
 
-                //var contact = _contactService.GetContact(email);
                 var contact = _contactService.GetContacts().FirstOrDefault(c => c.EmailAddress.Equals(email, StringComparison.OrdinalIgnoreCase));
 
                 if (contact != null)
