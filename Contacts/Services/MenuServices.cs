@@ -1,8 +1,6 @@
 ﻿using Contacts.Interfaces;
 using Contacts.Shared.Interfaces;
 using Contacts.Shared.Models;  
-using Contacts.Shared.Services;
-using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
 namespace Contacts.Services
