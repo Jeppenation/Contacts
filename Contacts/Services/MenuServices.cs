@@ -43,49 +43,143 @@ namespace Contacts.Services
 
         }
 
+        //public void DisplayMenu()
+        //{
+        //    try
+        //    {
+        //        while (true)
+        //        {
+        //            //Display the menu
+        //            Console.Clear();
+        //            Console.WriteLine("*** Welcome to the Contact App ***");
+        //            Console.WriteLine("1. Add Contact");
+        //            Console.WriteLine("2. Show All Contacts");
+        //            Console.WriteLine("3: Show Specific Contact");
+        //            Console.WriteLine("4. Remove Contact\n");
+        //            Console.WriteLine("55. Exit");
+
+        //            var choice = GetMenuChoice();
+
+        //            switch (choice)
+        //            {
+        //                case 1:
+        //                    AddContactMenu();
+        //                    break;
+        //                case 2:
+        //                    ShowContactsMenu();
+        //                    break;
+        //                case 3:
+        //                    ShowContactMenu();
+        //                    break;
+        //                case 4:
+        //                    DeleteContact();
+        //                    break;
+        //                case 55:
+        //                    Exit();
+        //                    break;
+        //                default:
+        //                    Console.Clear();
+        //                    Console.ForegroundColor = ConsoleColor.Red;
+        //                    Console.WriteLine("Invalid Choice");
+        //                    Console.ResetColor();
+        //                    ConfirmContinue();
+        //                    break;
+        //            }
+
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.WriteLine(ex.Message);
+        //    }
+        //}
+
         public void DisplayMenu()
         {
+            int menuIndex = 0;
+
             try
             {
                 while (true)
                 {
-                    //Display the menu
+                    // Display the menu based on menuIndex
                     Console.Clear();
-                    Console.WriteLine("*** Welcome to the Contact App ***"); 
-                    Console.WriteLine("1. Add Contact");
-                    Console.WriteLine("2. Show All Contacts");
-                    Console.WriteLine("3: Show Specific Contact");
-                    Console.WriteLine("4. Remove Contact\n");
-                    Console.WriteLine("55. Exit");
+                    Console.WriteLine("*** Welcome to the Contact App ***\n");
 
-                    var choice = GetMenuChoice();
-
-                    switch (choice)
+                    for (int i = 1; i <= 5; i++)
                     {
-                        case 1:
-                            AddContactMenu();
-                            break;
-                        case 2:
-                            ShowContactsMenu();
-                            break;
-                        case 3:
-                            ShowContactMenu();
-                            break;
-                        case 4:
-                            DeleteContact();
-                            break;
-                        case 55:
-                            Exit();
-                            break;
-                        default:
-                            Console.Clear();
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("Invalid Choice");
+                        
+                        if (i == menuIndex + 1 && i != 5)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write("-> ");
                             Console.ResetColor();
-                            ConfirmContinue();
-                            break;
+                        }
+                        else if (i == menuIndex + 1 && i == 5)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write("-> ");
+                            
+                        }
+                        else
+                        {
+                            Console.Write(" ");
+                        }
+
+                        switch (i)
+                        {
+                            case 1:
+                                Console.WriteLine("Add Contact");
+                                break;
+                            case 2:
+                                Console.WriteLine("Show All Contacts");
+                                break;
+                            case 3:
+                                Console.WriteLine("Show Specific Contact");
+                                break;
+                            case 4:
+                                Console.WriteLine("Remove Contact");
+                                break;
+                            case 5:
+                                Console.WriteLine("Exit");
+                                break;
+                        }
+
+                        Console.ResetColor();
                     }
 
+                    // Handle arrow key input
+                    ConsoleKeyInfo keyInfo = Console.ReadKey();
+                    if (keyInfo.Key == ConsoleKey.DownArrow)
+                    {
+                        menuIndex = (menuIndex + 1) % 5;
+                    }
+                    else if (keyInfo.Key == ConsoleKey.UpArrow)
+                    {
+                        menuIndex = (menuIndex - 1 + 5) % 5;
+                    }
+                    else if (keyInfo.Key == ConsoleKey.Enter)
+                    {
+                        // Perform action based on the selected menu item (menuIndex)
+                        switch (menuIndex + 1)
+                        {
+                            case 1:
+                                AddContactMenu();
+                                break;
+                            case 2:
+                                ShowContactsMenu();
+                                break;
+                            case 3:
+                                ShowContactMenu();
+                                break;
+                            case 4:
+                                DeleteContact();
+                                break;
+                            case 5:
+                                Exit();
+                                break;
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -93,6 +187,7 @@ namespace Contacts.Services
                 Debug.WriteLine(ex.Message);
             }
         }
+
 
         private void DeleteContact()
         {
