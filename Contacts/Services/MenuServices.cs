@@ -197,7 +197,7 @@ namespace Contacts.Services
                 Console.WriteLine($"*** {GetMenuTitle("4")} ***\n");
 
                 //Get the contact to delete
-                Console.Write("Enter the name of the contact you want to delete: ");
+                Console.Write("Enter the email of the contact you want to delete: ");
                 var email = Console.ReadLine()!.ToLower();
                 
                 //Find the contact
@@ -207,26 +207,45 @@ namespace Contacts.Services
                 //If the contact is found, remove it
                 if (contact != null)
                 {
-                    //Attempt to remove the contact, and check the result
-                    bool isRemoved = _contactService.RemoveContact(email);
 
-                    //If the contact was removed, show a success message
-                    if (isRemoved)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("--- Contact Removed Successfully ---\n\n");
-                        Console.ResetColor();
-                        ConfirmContinue();
-                    }
+                    Console.WriteLine($"\nName: {contact.FirstName} {contact.LastName}");
+                    Console.WriteLine($"Phone: {contact.PhoneNumber}");
+                    Console.WriteLine($"Email: {contact.EmailAddress}");
+                    Console.WriteLine($"Address: {contact.Address}");
+                    Console.WriteLine($"City: {contact.City}");
+                    Console.WriteLine("***********************************");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("\nAre you sure you want to delete this contact? (y/n): ");
+                    var message = Console.ReadLine()!;
+                    message = message.ToUpper();
+                    Console.ResetColor();
 
-                    //If the contact was not removed, show an error message
-                    else
+
+                    if (message == "Y")
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("--- Contact Not Removed ---\n\n");
-                        Console.ResetColor();
-                        ConfirmContinue();
+                        //Attempt to remove the contact, and check the result
+                        bool isRemoved = _contactService.RemoveContact(email);
+
+                        //If the contact was removed, show a success message
+                        if (isRemoved)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("--- Contact Removed Successfully ---\n\n");
+                            Console.ResetColor();
+                            ConfirmContinue();
+                        }
+
+                        //If the contact was not removed, show an error message
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("--- Contact Not Removed ---\n\n");
+                            Console.ResetColor();
+                            ConfirmContinue();
+                        }
                     }
+                   
+                    
                 }
                 //If the contact was not found, show an error message
                 else
@@ -249,7 +268,7 @@ namespace Contacts.Services
             {
                 Console.Clear();
                 Console.WriteLine($"*** {GetMenuTitle("3")} ***\n");
-                Console.Write("Enter the name of the contact you want to delete: ");
+                Console.Write("Enter the email of the contact you want to view: ");
                 var email = Console.ReadLine()!;
 
                 var contact = _contactService.GetContacts().FirstOrDefault(c => c.EmailAddress.Equals(email, StringComparison.OrdinalIgnoreCase));
