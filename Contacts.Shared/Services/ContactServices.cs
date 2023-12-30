@@ -9,9 +9,14 @@ namespace Contacts.Shared.Services
     {
         private readonly IFileService _fileService;
 
-  
+        //Path to the file
+        private static string baseDirectory = AppDomain.CurrentDomain.BaseDirectory ?? Directory.GetCurrentDirectory();
+        private static string relativePath = @"..\..\..\..\..\contacts.json";
+        private static string absolutePath = Path.Combine(baseDirectory, relativePath);
 
-        private readonly string _filePath = @"C:\Users\Hwila\source\repos\contacts.json";
+        //made the path to the file flexible, so it can be used on different computers
+        //Its placed directly under "repos" folder
+        private readonly string _filePath = absolutePath;
 
         private List<IContact> _contacts = [];
 
